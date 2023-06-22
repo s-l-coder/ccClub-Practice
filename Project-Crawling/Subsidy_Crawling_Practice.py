@@ -1,3 +1,5 @@
+#Vicky幫修版本!!!
+#待處理:我想要把印出的東西也寫到自訂函數中
 import requests
 from bs4 import BeautifulSoup
 import time
