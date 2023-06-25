@@ -36,10 +36,11 @@ def crawling_subsidy(url):
     #name是津貼名稱, 指定進去
     name = titles
     url = url
-    #利用變數指定方式區分'服務內容'跟'申辦資格'這兩個標題跟裡面的內容
-    none, content_1_title, *content_1= content_1_p
+    #利用變數指定方式把'服務內容'跟'申辦資格'這兩個標題跟裡面的內容文字區分開來
+    none, content_1_title, none, none, *content_1= content_1_p
     #content_1_title = 服務內容
-    none, content_2_title, *content_2= content_2_p
+    none, content_2_title, none, none, *content_2= content_2_p
+    #content_2_title = 申辦資格
     if content_1_title == '服務內容' and content_2_title == '申辦資格':
         print(content_1_title)
         print( *content_1 )  #用*號解包
