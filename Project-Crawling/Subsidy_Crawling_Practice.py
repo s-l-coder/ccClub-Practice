@@ -20,6 +20,7 @@ url_list.append(url_adopt)
 
 
 def crawling_subsidy(url):
+    subsidy_list = []
     response = requests.get(url , headers = headers)
     soup = BeautifulSoup(response.text, "html.parser")
     titles = soup.find("div", class_= "simple-text title").getText()
@@ -29,8 +30,7 @@ def crawling_subsidy(url):
     for contents_test in soup.findAll("div", class_= "css-tr", limit = 2):
         # print(contents_test)
         subsidy_list.append(contents_test.getText().replace('\n'," ")) #把抓到的前兩項內容先取文字後,放在串列中
-    
-    result[titles] = subsidy_list #把服務跟資格做成字典的value
+        result[titles] = subsidy_list　  #把服務跟資格做成字典的value
     print(result[titles][0])
     print(result[titles][1])
 
@@ -41,8 +41,8 @@ for u in url_list:
     
 #print(result) 
 
-a = "育有未滿2歲兒童育兒津貼"  #a,b是津貼名稱
-b = '認領登記'
+# a = "育有未滿2歲兒童育兒津貼"  #a,b是津貼名稱
+# b = '認領登記'
 
 # print(result[a][0]) #育兒的服務
 # print(result[a][1]) #育兒的資格
