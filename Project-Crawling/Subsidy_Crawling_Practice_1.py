@@ -29,12 +29,22 @@ def crawling_subsidy(url):
         # print(contents_test)
         subsidy_list.append(contents_test.getText().replace('\n'," ")) #把抓到的前兩項內容先取文字後,放在串列中
         result[titles] = subsidy_list  #把服務跟資格做成字典的value
-    #把資料指定給所需欄位名稱的變數
+    #服務內容這邊的資料等於content_1_p
+    content_1_p = result[titles][0].split(" ")
+    #申辦資格資料等於content_2_p
+    content_2_p = result[titles][1].split(" ")
+    #name是津貼名稱, 指定進去
     name = titles
     url = url
-    content_1 = result[titles][0]
-    content_2 = result[titles][1]
-    return name, url, content_1, content_2
+    #利用變數指定方式區分'服務內容'跟'申辦資格'這兩個標題跟裡面的內容
+    none, content_1_title, *content_1= content_1_p
+    #content_1_title = 服務內容
+    none, content_2_title, *content_2= content_2_p
+    if content_1_title == '服務內容' and content_2_title == '申辦資格':
+        print(content_1_title)
+        print( *content_1 )  #用*號解包
+        print( *content_2 )
+    # return name, url, content_1, return content_2
     
     # print(result[titles][0])
     # print(result[titles][1])
