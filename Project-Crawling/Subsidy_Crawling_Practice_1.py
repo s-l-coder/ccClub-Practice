@@ -42,8 +42,9 @@ def crawling_subsidy(url):
     none, content_2_title, none, none, *content_2= content_2_p
     #content_2_title = 申辦資格
     if content_1_title == '服務內容' and content_2_title == '申辦資格':
-        print(content_1_title)
+        print(content_1_title,"：")
         print( *content_1 )  #用*號解包
+        print(content_2_title,"：")
         print( *content_2 )
     # return name, url, content_1, return content_2
     
