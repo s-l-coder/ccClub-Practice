@@ -57,7 +57,7 @@ def crawling_subsidy(url):
         criteria['labor'].append(name)
     if re.findall(r'弱勢|中低收入|中低老人|經濟弱勢|低收入戶', name):
         criteria['lowincome'].append(name)
-    if re.findall(r'身心障礙', name):
+    if re.findall(r'身心障礙|身障', name):
         criteria['disabled'].append(name)
     if re.findall(r'老人|老年', name):
         criteria['elder'].append(name)
@@ -66,22 +66,23 @@ def crawling_subsidy(url):
     if re.findall(r'喪葬|死亡|身故', name):
         criteria['passaway'].append(name)
     
+    subsidy_dict[name] = []
     if re.findall(r'育兒|兒童|生育|育嬰|幼兒|早期療育', name):
-        subsidy_dict[name].append('birth')
+        subsidy_dict[name].append(['birth'])
     if re.findall(r'獎學金|獎助學金|就學|教育|學費', name):
-        subsidy_dict[name].append('students')
+        subsidy_dict[name].append(['students'])
     if re.findall(r'國民年金|勞工|勞保|就業|職業災害|職災|職保|就保|失業|工作', name):
-        subsidy_dict[name].append('labor')
+        subsidy_dict[name].append(['labor'])
     if re.findall(r'弱勢|中低收入|中低老人|經濟弱勢|低收入戶', name):
-        subsidy_dict[name].append('lowincome')
-    if re.findall(r'身心障礙', name):
-        subsidy_dict[name].append('disabled')
+        subsidy_dict[name].append(['lowincome'])
+    if re.findall(r'身心障礙|身障', name):
+        subsidy_dict[name].append(['disabled'])
     if re.findall(r'老人|老年', name):
-        subsidy_dict[name].append('elder')
+        subsidy_dict[name].append(['elder'])
     if re.findall(r'修繕|租賃|住屋|房屋|租金|住宅|租屋|購屋', name):
-        subsidy_dict[name].append('house')
+        subsidy_dict[name].append(['house'])
     if re.findall(r'喪葬|死亡|身故', name):
-        subsidy_dict[name].append('passaway')
+        subsidy_dict[name].append(['passaway'])
 
     
 
