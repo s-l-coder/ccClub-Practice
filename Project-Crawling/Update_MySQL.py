@@ -3,7 +3,7 @@ import re
 
 
 #資料庫連線設定
-db = pymysql.connect(host='0.tcp.jp.ngrok.io', port=14080, user='root', passwd='0624', db='fastapi', charset='utf8')
+db = pymysql.connect(host='0.tcp.jp.ngrok.io', port=14080, user='guestuser', passwd='0624', db='fastapi', charset='utf8')
 #建立操作游標
 cursor = db.cursor()
 #SQL語法
