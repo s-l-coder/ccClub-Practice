@@ -27,6 +27,7 @@ while True:
             url_1 = f.readline()
             new_data = (serial_no_1, category_1, organization_name_1, url_1, content_1, condition_list_1, name_1)
             #更新資料語法update 資料表名稱 SET 欄位=數值 WHERE條件式
+            #記得修改資料表位置
             update_subsidy = " \
             UPDATE info SET serial_no = %s, category = %s, organization_name = %s, url = %s, content = %s, condition_list = %s  \
             WHERE name = %s"  #變數位置都要跟上面new_data一樣
