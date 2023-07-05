@@ -123,20 +123,20 @@ def crawling_subsidy(url):
     else:
         print('此區錯誤:',titles)
 
-for u in url_list:
-    crawling_subsidy(u)
-
-# #設定爬蟲日期
-# today = datetime.date.today()
-# crawling_content_date = today.strftime('%Y%m%d')
-# #利用津貼名稱跟網址的字典叫出爬蟲函式所需的變數(網址&津貼名稱)
-# #用名稱跑迴圈
-
 # for u in url_list:
-#     #寫入結果檔案 利用with open() as不用關閉檔案
-#     #設定津貼爬蟲內容清單為subsidy_crawling_result_今天日期.txt
-#     crawling_data = str(crawling_subsidy(u))
-#     with open(f'subsidy_crawling_result_{crawling_content_date}.txt', mode='w', encoding="utf-8") as file:
-#         file.write(crawling_data)
+#     crawling_subsidy(u)
+
+#設定爬蟲日期
+today = datetime.date.today()
+crawling_content_date = today.strftime('%Y%m%d')
+#利用津貼名稱跟網址的字典叫出爬蟲函式所需的變數(網址&津貼名稱)
+#用名稱跑迴圈
+
+for u in url_list:
+    #寫入結果檔案 利用with open() as不用關閉檔案
+    #設定津貼爬蟲內容清單為subsidy_crawling_result_今天日期.txt
+    crawling_data = str(crawling_subsidy(u))
+    with open(f'subsidy_crawling_result_{crawling_content_date}.txt', mode='a', encoding="utf-8") as file:
+        file.write(crawling_data + '\n')
 
 # crawling_subsidy('https://www.gov.tw/News3_Content.aspx?n=2&s=517156')
