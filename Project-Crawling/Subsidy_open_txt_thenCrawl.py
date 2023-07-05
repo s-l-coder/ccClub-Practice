@@ -1,40 +1,39 @@
 # 目標:寫出利用讀文字檔案套用爬蟲function的結果
-# 待處理: KeyError部分 line 51
+# 待處理: KeyError部分
 import requests
 from bs4 import BeautifulSoup
 import random
-import time
+import datetime
 import re
 #創立津貼所有網址的list 等下可以接
 url_list = []
 subsidy_name_list = []
+organization_list = []
 #打開Claire爬好的網址檔案
-f = open('爬蟲練習/name_oragn_url.txt','r',encoding="utf-8")
+f = open('爬蟲練習/name_organ_url.txt','r',encoding="utf-8")
 
 for line in f.readlines():
     subsidy = line.split("$$$")
     name = subsidy[0] #津貼名稱
     organ = subsidy[1] #中央或地方政府
-    url = subsidy[2] #網址
+    url = subsidy[2].rstrip('\n') #讀取檔案會遇到換行\n符號出現的問題, 用 .rstrip('\n') 解決
     url_list.append(url)
+    organization_list.append(organ)
     subsidy_name_list.append(name)
 
 f.close
 print(subsidy_name_list)
-print(url_list)
-
+# print(url_list)
+subsidy_name_url_dict = {}
+subsidy_name_url_dict= dict(zip(subsidy_name_list, url_list))
+name_organ_dict = dict(zip(subsidy_name_list,organization_list))
+print(subsidy_name_url_dict)
 
 subsidy_list = []
 result = {}
 # 加入headers以偽裝我們的真實身分
 headers = {'User-Agent': 'User-Agent:Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36' }
 
-content_1_p = ""
-content_1_title = ""
-content_1 = ""
-content_2_p = ""
-content_2_title = ""
-content_2 = ""
 
 def crawling_subsidy(url, name):
     subsidy_list = []
@@ -83,7 +82,7 @@ def crawling_subsidy(url, name):
     #津貼編號
     serial_no = int(url[-6:])
     #政府單位
-    organization_name = organ #在上一個打開檔案的區塊有定義
+    organization_name = name_organ_dict[name] #在上一個打開檔案的區塊有定義
         
     if content_1_title == '服務內容' and content_2_title == '申辦資格':
         print(serial_no)
@@ -116,11 +115,16 @@ def crawling_subsidy(url, name):
         print(content_2_title,"：")
         print(content_2)
         print(url)
-    
 
-# for u in url_list跑所有的網址
-for u in url_list:
-    for name in subsidy_name_list:
-        #寫入結果檔案
-        with open("Subsidy_Crawling_Result.txt", mode='w', encoding="utf-8") as file:
-            file.write(crawling_subsidy(u, name))
+
+
+#設定爬蟲日期
+today = datetime.date.today()
+crawling_content_date = today.strftime('%Y%m%d')
+#利用津貼名稱跟網址的字典叫出爬蟲函式所需的變數(網址&津貼名稱)
+#用名稱跑迴圈
+for name in subsidy_name_list:
+    #寫入結果檔案 利用with open() as不用關閉檔案
+    #設定津貼爬蟲內容清單為subsidy_crawling_result_今天日期.txt
+    with open(f'subsidy_crawling_result_{crawling_content_date}.txt', mode='w', encoding="utf-8") as file:
+        file.write(str(crawling_subsidy(subsidy_name_url_dict[name], name)))
