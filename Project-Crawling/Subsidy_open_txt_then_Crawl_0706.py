@@ -17,7 +17,7 @@ url_list = []
 subsidy_name_list = []
 organization_list = []
 #打開Claire爬好的網址檔案(記得修改檔案路徑)
-f = open('爬蟲練習/name_organ_url.txt','r',encoding="utf-8")
+f = open('name_organ_url.txt','r',encoding="utf-8")
 for line in f.readlines():
     subsidy = line.split("$$$")
     name = subsidy[0] #津貼名稱
@@ -28,7 +28,7 @@ for line in f.readlines():
     subsidy_name_list.append(name)
 #記得關閉檔案
 f.close
-name_organ_dict = zip(subsidy_name_list,organization_list) #利用剛剛讀的檔案內容製作津貼名稱跟單位的字典
+name_organ_dict = dict(zip(subsidy_name_list,organization_list)) #利用剛剛讀的檔案內容製作津貼名稱跟單位的字典
 subsidy_list = []
 result = {} 
 # 加入headers以偽裝我們的真實身分
@@ -40,9 +40,10 @@ def crawling_subsidy(url):
     response = requests.get(url , headers = headers)
     soup = BeautifulSoup(response.text, "html.parser")
     titles = soup.find("div", class_= "simple-text title").getText() #津貼標題
-    
+    time.sleep(delay)
     #利用findAll爬津貼頁面下方所有內容，然後用for迴圈＆getText取文字值就好
     for contents_test in soup.findAll("div", class_= "css-tr", limit = 2):
+        time.sleep(delay)
         subsidy_list.append(contents_test.getText(strip = True)) #把抓到的前兩項內容先取文字後,放在串列中
         result[titles] = subsidy_list  #把服務跟資格做成字典的value
     
@@ -73,6 +74,8 @@ def crawling_subsidy(url):
         category_list.append('house')
     if re.findall(r'喪葬|死亡|身故', titles):
         category_list.append('passaway')
+    else :
+        category_list.append('others')
     #category是津貼種類, 指定進去,用join從category_list串列取出成字串
     category = ', '.join(category_list)
     url = url #url是津貼網址, 指定進去
@@ -105,11 +108,11 @@ for u in url_list:
         file.write(titles+"\n")
         file.write(category+"\n")
         file.write(organization_name+"\n")
-        file.write(content_1_title+":"+"\n")
+        # file.write(content_1_title+":"+"\n")
         file.write(content_1+"\n")
-        file.write(content_2_title+":"+"\n")
+        # file.write(content_2_title+":"+"\n")
+        file.write(content_2+"\n")
         file.write(url+"\n")
-
 
 
 
