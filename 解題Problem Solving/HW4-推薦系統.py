@@ -2,13 +2,13 @@ judge = input()
 shoppinglist_dict = {}
 shoppinglist = []
 name_list = []
-suggest_list = []
+
 while True:
     try:
         shoppingdata = input().split(' ')
         name = shoppingdata[0]
         shoppingitem = shoppingdata[1:]
-        if shoppingdata == "end":
+        if shoppingdata == ["end"]:
             break
         else:
             shoppinglist_dict[name] = shoppingitem
@@ -16,18 +16,32 @@ while True:
             name_list.append(name)
     except EOFError:
         break
+print(shoppinglist_dict)
+print(name_list)
 #寫一個計算相似度的方法
 #先想辦法知道每個人之間的相似度->知道重複的購買清單
-def similaritycheck(listA, listB): #listA是比較基準
-    list = listA + listB #先將兩清單合併
-    #利用set跟count去拿出重複值
-    repeat_item = [i for i in set(list) if list.count(i)>1]
-    similarity = len(repeat_item) / len(listA)
+def similaritycheck(listA, listB):
+    def repeatcheck(listA, listB): #小的function是取兩個串列的交集(也就是重複之處)
+        return set(listA) & set(listB) 
+    similarity = len(list(repeatcheck(listA, listB))) / len(listA) #取AB之間與A的相似之處
+    #注意判斷大於小於不支援float
     return similarity
+# print(similaritycheck([1,3,6], [1, 3, 2, 4]))
+suggest_list = []
+suggest_dict = {}
+for i in range(len(name_list)+1):
+    if i == len(name_list)+1:
+        pass
+        if similaritycheck(shoppinglist_dict[name_list[i]] , shoppinglist_dict[name_list[i+1]]) > int(judge):
+            print(set(shoppinglist_dict[name_list[i+1]]) - set(shoppinglist_dict[name_list[i]]))
+            suggest_list.append( list(set(shoppinglist_dict[name_list[i+1]]) - set(shoppinglist_dict[name_list[i]])))
+            suggest_dict[name_list[i]] = suggest_list
+            print(suggest_dict)
+        else:
+            pass
+print(suggest_dict)
 
-for i in len(name_list):
-    if similaritycheck(shoppinglist_dict[name_list[0]] , shoppinglist_dict[name_list[i]]) > judge:
-        
+
 
 
 '''
