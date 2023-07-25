@@ -20,26 +20,51 @@ print(shoppinglist_dict)
 print(name_list)
 #寫一個計算相似度的方法
 #先想辦法知道每個人之間的相似度->知道重複的購買清單
-def similaritycheck(listA, listB):
-    def repeatcheck(listA, listB): #小的function是取兩個串列的交集(也就是重複之處)
-        return set(listA) & set(listB) 
-    similarity = len(list(repeatcheck(listA, listB))) / len(listA) #取AB之間與A的相似之處
-    #注意判斷大於小於不支援float
+def similaritycheck(A, B):
+    def repeatcheck(A, B): #小的function是取兩個串列的交集(也就是重複之處)
+        return set(shoppinglist_dict[A]) & set(shoppinglist_dict[B]) 
+    similarity = len(list(repeatcheck(A, B))) / len(shoppinglist_dict[A]) #取AB之間與A的相似之處
     return similarity
+print(similaritycheck(name_list[0],name_list[1]))
 # print(similaritycheck([1,3,6], [1, 3, 2, 4]))
 suggest_list = []
 suggest_dict = {}
-for i in range(len(name_list)+1):
-    if i == len(name_list)+1:
-        pass
-        if similaritycheck(shoppinglist_dict[name_list[i]] , shoppinglist_dict[name_list[i+1]]) > int(judge):
-            print(set(shoppinglist_dict[name_list[i+1]]) - set(shoppinglist_dict[name_list[i]]))
-            suggest_list.append( list(set(shoppinglist_dict[name_list[i+1]]) - set(shoppinglist_dict[name_list[i]])))
-            suggest_dict[name_list[i]] = suggest_list
-            print(suggest_dict)
-        else:
-            pass
-print(suggest_dict)
+def suggest(A,B):
+    if similaritycheck(shoppinglist_dict[A] , shoppinglist_dict[B]) > int(judge):
+        # suggest_item = set(A) - set(B)
+        suggest_list.append(set(shoppinglist_dict[A]) - set(shoppinglist_dict[B]))
+        suggest_dict[name] = suggest_list
+        print(suggest_dict)
+    else:
+        print("未達標準")
+
+print(suggest(name_list[0],name_list[1]))
+
+# for i ,n in enumerate(name_list):
+#     for index,name in enumerate(name_list):
+#         if index == i:
+#             print("遇到一樣的了")
+#         else:
+#             suggest(n, name)
+
+
+# if similaritycheck(shoppinglist_dict[name_list[0]] , shoppinglist_dict[name_list[1]]) > int(judge):
+#     suggest_item = set(shoppinglist_dict[name_list[1]]) - set(shoppinglist_dict[name_list[0]]) #建議物品是兩者的差集
+#     print(set(shoppinglist_dict[name_list[1]]) - set(shoppinglist_dict[name_list[0]])) 
+#     suggest_list.append( set(shoppinglist_dict[name_list[1]]) - set(shoppinglist_dict[name_list[0]]) )
+#     suggest_dict[name_list[0]] = suggest_list
+#     print(suggest_dict)
+# for i in range(len(name_list)+1):
+#     if i == len(name_list)+1:
+#         pass
+#         if similaritycheck(shoppinglist_dict[name_list[i]] , shoppinglist_dict[name_list[i+1]]) > int(judge):
+#             print(set(shoppinglist_dict[name_list[i+1]]) - set(shoppinglist_dict[name_list[i]]))
+#             suggest_list.append( list(set(shoppinglist_dict[name_list[i+1]]) - set(shoppinglist_dict[name_list[i]])))
+#             suggest_dict[name_list[i]] = suggest_list
+#             print(suggest_dict)
+#         else:
+#             pass
+# print(suggest_dict)
 
 
 
