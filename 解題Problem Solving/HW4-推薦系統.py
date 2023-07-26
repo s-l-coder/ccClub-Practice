@@ -25,27 +25,41 @@ def similaritycheck(A, B):
         return set(shoppinglist_dict[A]) & set(shoppinglist_dict[B]) 
     similarity = len(list(repeatcheck(A, B))) / len(shoppinglist_dict[A]) #取AB之間與A的相似之處
     return similarity
-print(similaritycheck(name_list[0],name_list[1]))
+# print(similaritycheck(name_list[0],name_list[1]))
 # print(similaritycheck([1,3,6], [1, 3, 2, 4]))
 suggest_list = []
+suggest_set= set()
 suggest_dict = {}
 def suggest(A,B):
-    if similaritycheck(shoppinglist_dict[A] , shoppinglist_dict[B]) > int(judge):
-        # suggest_item = set(A) - set(B)
-        suggest_list.append(set(shoppinglist_dict[A]) - set(shoppinglist_dict[B]))
-        suggest_dict[name] = suggest_list
+    suggest_dict[A] = list()
+    # suggest_list = []
+    # suggest_dict[A] = [""]
+    if similaritycheck(A , B) > int(judge) / 100: #因為我們前面自訂義函式用除法,所以這裡再用/100
+        suggest_item = set(shoppinglist_dict[B]) - set(shoppinglist_dict[A])
+        # suggest_list = []
+        suggest_list.append(suggest_item)
+        # suggest_list.append(suggest_set + suggest_item)
+        
+        suggest_dict[A].extend(suggest_list)
         print(suggest_dict)
+    elif similaritycheck(A , B) < int(judge) / 100:
+        pass
+        # suggest_item = ""
+        # suggest_list.append(
+        # suggest_dict.update({A : ""})
     else:
-        print("未達標準")
+        pass
 
-print(suggest(name_list[0],name_list[1]))
+    return suggest_dict
 
-# for i ,n in enumerate(name_list):
-#     for index,name in enumerate(name_list):
-#         if index == i:
-#             print("遇到一樣的了")
-#         else:
-#             suggest(n, name)
+# print(suggest(name_list[0],name_list[1]))
+
+for i , name1 in enumerate(name_list):
+    for index, name2 in enumerate(name_list):
+        if name1 == name2:
+            print("遇到一樣的了")
+        else:
+            print(suggest(name1, name2))
 
 
 # if similaritycheck(shoppinglist_dict[name_list[0]] , shoppinglist_dict[name_list[1]]) > int(judge):
