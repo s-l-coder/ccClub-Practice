@@ -16,8 +16,8 @@ while True:
             name_list.append(name)
     except EOFError:
         break
-print(shoppinglist_dict)
-print(name_list)
+# print(shoppinglist_dict)
+# print(name_list)
 #寫一個計算相似度的方法
 #先想辦法知道每個人之間的相似度->知道重複的購買清單
 def similaritycheck(A, B):
@@ -25,60 +25,46 @@ def similaritycheck(A, B):
         return set(shoppinglist_dict[A]) & set(shoppinglist_dict[B]) 
     similarity = len(list(repeatcheck(A, B))) / len(shoppinglist_dict[A]) #取AB之間與A的相似之處
     return similarity
-# print(similaritycheck(name_list[0],name_list[1]))
-# print(similaritycheck([1,3,6], [1, 3, 2, 4]))
+
 suggest_list = []
 suggest_set= set()
 suggest_dict = {}
 def suggest(A,B):
-    suggest_dict[A] = list()
-    # suggest_list = []
-    # suggest_dict[A] = [""]
-    if similaritycheck(A , B) > int(judge) / 100: #因為我們前面自訂義函式用除法,所以這裡再用/100
+    suggest_list = [] #每次讓建議購買清單的先清空
+    if similaritycheck(A , B) >= int(judge) / 100: 
+        #因為我們前面自訂義函式用除法,所以這裡再用/100
         suggest_item = set(shoppinglist_dict[B]) - set(shoppinglist_dict[A])
-        # suggest_list = []
-        suggest_list.append(suggest_item)
-        # suggest_list.append(suggest_set + suggest_item)
-        
-        suggest_dict[A].extend(suggest_list)
-        print(suggest_dict)
+        if A not in suggest_dict.keys(): #設定如建議購買字典中沒有人名就新增字典key 
+            suggest_dict[A] = list(suggest_item)
+        else: 
+            #如果已經有key就用extend()新增value(因為可能有多個建議購買)
+            #用extend不用append是因為extend會取出元素直接新增(不會變成一個串列物件)
+            suggest_dict[A].extend( list(suggest_item) )
+        # print(suggest_dict)
     elif similaritycheck(A , B) < int(judge) / 100:
         pass
-        # suggest_item = ""
-        # suggest_list.append(
-        # suggest_dict.update({A : ""})
     else:
         pass
+
+    if A not in suggest_dict.keys(): #設定如建議購買字典中沒有人名就新增字典key 
+        suggest_dict[A] = []
 
     return suggest_dict
 
 # print(suggest(name_list[0],name_list[1]))
 
-for i , name1 in enumerate(name_list):
+for i , name1 in enumerate(name_list): #利用enumerate函式叫出人名
     for index, name2 in enumerate(name_list):
-        if name1 == name2:
-            print("遇到一樣的了")
+        if name1 == name2:  #讓判斷相似值遇到同樣人名的時候跳過
+            pass
         else:
-            print(suggest(name1, name2))
+            suggest_list_fin = suggest(name1, name2)
+            # print(suggest_list_fin)
 
+for key, value in suggest_list_fin.items():
+    new_value = set(value) #去除重複的購買清單
+    print(key, *list(new_value))
 
-# if similaritycheck(shoppinglist_dict[name_list[0]] , shoppinglist_dict[name_list[1]]) > int(judge):
-#     suggest_item = set(shoppinglist_dict[name_list[1]]) - set(shoppinglist_dict[name_list[0]]) #建議物品是兩者的差集
-#     print(set(shoppinglist_dict[name_list[1]]) - set(shoppinglist_dict[name_list[0]])) 
-#     suggest_list.append( set(shoppinglist_dict[name_list[1]]) - set(shoppinglist_dict[name_list[0]]) )
-#     suggest_dict[name_list[0]] = suggest_list
-#     print(suggest_dict)
-# for i in range(len(name_list)+1):
-#     if i == len(name_list)+1:
-#         pass
-#         if similaritycheck(shoppinglist_dict[name_list[i]] , shoppinglist_dict[name_list[i+1]]) > int(judge):
-#             print(set(shoppinglist_dict[name_list[i+1]]) - set(shoppinglist_dict[name_list[i]]))
-#             suggest_list.append( list(set(shoppinglist_dict[name_list[i+1]]) - set(shoppinglist_dict[name_list[i]])))
-#             suggest_dict[name_list[i]] = suggest_list
-#             print(suggest_dict)
-#         else:
-#             pass
-# print(suggest_dict)
 
 
 
