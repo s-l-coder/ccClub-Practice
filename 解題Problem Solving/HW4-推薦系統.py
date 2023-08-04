@@ -16,7 +16,7 @@ while True:
             name_list.append(name)
     except EOFError:
         break
-# print(shoppinglist_dict)
+
 # print(name_list)
 #寫一個計算相似度的方法
 #先想辦法知道每個人之間的相似度->知道重複的購買清單
@@ -29,11 +29,28 @@ def similaritycheck(A, B):
 suggest_list = []
 suggest_set= set()
 suggest_dict = {}
+
+#最後推薦清單需要照商品出現順序印出,所以先製作購物清單
+shoppingitem = shoppinglist_dict.values()
+alt_shoppinglist = list(map("".join , shoppingitem)) #用map把join的功能套用在購物清單,解包(但還有一層)
+shoppinglist_str = "".join(map(str , alt_shoppinglist)) #再用一次解包
+print(shoppinglist_str)
+#製作購物清單的index
+index_shoppinglist = enumerate(shoppinglist_str)
+recommend_dict = {}
+for index, name2 in index_shoppinglist:
+    recommend_dict [name2] = index
+index_list = [ n for n, name2 in index_shoppinglist ]
+print(index_list)
+
 def suggest(A,B):
     suggest_list = [] #每次讓建議購買清單的先清空
     if similaritycheck(A , B) >= int(judge) / 100: 
         #因為我們前面自訂義函式用除法,所以這裡再用/100
         suggest_item = set(shoppinglist_dict[B]) - set(shoppinglist_dict[A])
+        #依照商品出現順序排序
+        suggest_item = sorted(list(suggest_item),reverse=False,key=lambda item: recommend_dict[item])
+        print(suggest_item)
         if A not in suggest_dict.keys(): #設定如建議購買字典中沒有人名就新增字典key 
             suggest_dict[A] = list(suggest_item)
         else: 
@@ -59,11 +76,13 @@ for i , name1 in enumerate(name_list): #利用enumerate函式叫出人名
             pass
         else:
             suggest_list_fin = suggest(name1, name2)
-            # print(suggest_list_fin)
+            print(suggest_list_fin)
+print(shoppinglist_dict.values())
 
 for key, value in suggest_list_fin.items():
-    new_value = set(value) #去除重複的購買清單
-    print(key, *list(new_value))
+    # new_value = set(value) #去除重複的購買清單
+    # print(new_value)
+    print(key, value)
 
 
 
